@@ -21,7 +21,7 @@ Req Body:
 ### POST /rego/run
 
 Req Body:
- -  rego_modules: object
+ -  rego_modules: object key module name and value module content
  -  input: object
  -  data: object
  -  strict: boolean
