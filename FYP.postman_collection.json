@@ -1,0 +1,311 @@
+{
+	"info": {
+		"_postman_id": "68c23bd0-d2c6-4374-9872-02af345b3acc",
+		"name": "FYP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18743099"
+	},
+	"item": [
+		{
+			"name": "playground",
+			"item": [
+				{
+					"name": "rego",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"regoCode\": \"package app.rbac\\n\\n# By default, deny requests.\\ndefault allow := false\\n\\n# Allow admins to do anything.\\nallow if user_is_admin\\n\\n# Allow the action if the user is granted permission to perform the action.\\nallow  {\\n\\t# Find grants for the user.\\n\\tsome grant in user_is_granted\\n\\n\\t# Check if the grant permits the action.\\n\\tinput.action == grant.action\\n\\tinput.type == grant.type\\n}\\n\\n# user_is_admin is true if \\\"admin\\\" is among the user's roles as per data.user_roles\\nuser_is_admin if \\\"admin\\\" in data.user_roles[input.user]\\n\\n# user_is_granted is a set of grants for the user identified in the request.\\n# The `grant` will be contained if the set `user_is_granted` for every...\\nuser_is_granted contains grant if {\\n\\t# `role` assigned an element of the user_roles for this user...\\n\\tsome role in data.user_roles[input.user]\\n\\n\\t# `grant` assigned a single grant from the grants list for 'role'...\\n\\tsome grant in data.role_grants[role]\\n}\\n\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/playground/scan",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"playground",
+								"scan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "kyverno-json",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"regoCode\": \"package example\\n\\ndefault allow = false\\n\\nallow {\\n    input.method == \\\"GET\\\"\\n    input.path == [\\\"api\\\", \\\"v1\\\", \\\"users\\\"]\\n    input.user.role == \\\"admin\\\"\\n}\\n\\nusers := [\\\"alice\\\", \\\"bob\\\", \\\"charlie\\\"]\\n\\nis_valid_user(user) {\\n    user == users[_]\\n}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/playground/kyverno-json",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"playground",
+								"kyverno-json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"kyvernoPolicy\":\"kill\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/playground/kyverno-to-rego",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"playground",
+								"kyverno-to-rego"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "rego playground",
+			"item": [
+				{
+					"name": "rego server fmt",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rego_version\": 1,\n  \"rego_module\": \"package app.rbac\\n\\n# By default, deny requests.\\ndefault allow := false\\n\\n# Allow admins to do anything\\n\\n# Allow the action if the user is granted permission to perform the action.\\nallow if {\\n\\t# Find grants for the user.\\n\\tsome grant in user_is_granted\\n\\txyz := true\\n\\n\\t# Check if the grant permits the action.\\n\\tinput.action == grant.action\\n\\tinput.type == grant.type\\n}\\n\\n# user_is_admin is true if \\\"admin\\\" is among the user's roles as per data.user_roles\\nuser_is_admin if \\\"admin\\\" in data.user_roles[input.user]\\n\\n# user_is_granted is a set of grants for the user identified in the request.\\n# The `grant` will be contained if the set `user_is_granted` for every...\\nuser_is_granted contains grant if {\\n\\n\\n\\n\\n\\n\\n\\n\\n\\t# `role` assigned an element of the user_roles for this user...\\n\\tsome role in data.user_roles[input.user]\\n\\n\\t# `grant` assigned a single grant from the grants list for 'role'...\\n\\tsome grant in data.role_grants[role]\\n}\\n\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://play.openpolicyagent.org/v1/fmt",
+							"protocol": "https",
+							"host": [
+								"play",
+								"openpolicyagent",
+								"org"
+							],
+							"path": [
+								"v1",
+								"fmt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rego server lint",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rego_version\": 1,\n  \"rego_module\": \"package app.rbac\\n\\n# By default, deny requests.\\ndefault allow := false\\n\\n# Allow admins to do anything\\n\\n# Allow the action if the user is granted permission to perform the action.\\nallow if {\\n\\t# Find grants for the user.\\n\\tsome grant in user_is_granted\\n\\txyz := true\\n\\n\\t# Check if the grant permits the action.\\n\\tinput.action == grant.action\\n\\tinput.type == grant.type\\n}\\n\\n# user_is_admin is true if \\\"admin\\\" is among the user's roles as per data.user_roles\\nuser_is_admin if \\\"admin\\\" in data.user_roles[input.user]\\n\\n# user_is_granted is a set of grants for the user identified in the request.\\n# The `grant` will be contained if the set `user_is_granted` for every...\\nuser_is_granted contains grant if {\\n\\n\\n\\n\\n\\n\\n\\n\\n\\t# `role` assigned an element of the user_roles for this user...\\n\\tsome role in data.user_roles[input.user]\\n\\n\\t# `grant` assigned a single grant from the grants list for 'role'...\\n\\tsome grant in data.role_grants[role]\\n}\\n\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://play.openpolicyagent.org/v1/fmt",
+							"protocol": "https",
+							"host": [
+								"play",
+								"openpolicyagent",
+								"org"
+							],
+							"path": [
+								"v1",
+								"fmt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rego server run againts policy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rego_version\": 1,\n  \"rego_module\": \"package app.rbac\\n\\n# By default, deny requests.\\ndefault allow := false\\n\\n# Allow admins to do anything\\n\\n# Allow the action if the user is granted permission to perform the action.\\nallow if {\\n\\t# Find grants for the user.\\n\\tsome grant in user_is_granted\\n\\txyz := true\\n\\n\\t# Check if the grant permits the action.\\n\\tinput.action == grant.action\\n\\tinput.type == grant.type\\n}\\n\\n# user_is_admin is true if \\\"admin\\\" is among the user's roles as per data.user_roles\\nuser_is_admin if \\\"admin\\\" in data.user_roles[input.user]\\n\\n# user_is_granted is a set of grants for the user identified in the request.\\n# The `grant` will be contained if the set `user_is_granted` for every...\\nuser_is_granted contains grant if {\\n\\n\\n\\n\\n\\n\\n\\n\\n\\t# `role` assigned an element of the user_roles for this user...\\n\\tsome role in data.user_roles[input.user]\\n\\n\\t# `grant` assigned a single grant from the grants list for 'role'...\\n\\tsome grant in data.role_grants[role]\\n}\\n\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://play.openpolicyagent.org/v1/data",
+							"protocol": "https",
+							"host": [
+								"play",
+								"openpolicyagent",
+								"org"
+							],
+							"path": [
+								"v1",
+								"data"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "rego playground express-be",
+			"item": [
+				{
+					"name": "rego server fmt",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rego_version\": 1,\n  \"rego_module\": \"package app.rbac\\n\\n# By default, deny requests.\\ndefault allow := false\\n\\n# Allow admins to do anything\\n\\n# Allow the action if the user is granted permission to perform the action.\\nallow if {\\n\\t# Find grants for the user.\\n\\tsome grant in user_is_granted\\n\\txyz := true\\n\\n\\t# Check if the grant permits the action.\\n\\tinput.action == grant.action\\n\\tinput.type == grant.type\\n}\\n\\n# user_is_admin is true if \\\"admin\\\" is among the user's roles as per data.user_roles\\nuser_is_admin if \\\"admin\\\" in data.user_roles[input.user]\\n\\n# user_is_granted is a set of grants for the user identified in the request.\\n# The `grant` will be contained if the set `user_is_granted` for every...\\nuser_is_granted contains grant if {\\n\\n\\n\\n\\n\\n\\n\\n\\n\\t# `role` assigned an element of the user_roles for this user...\\n\\tsome role in data.user_roles[input.user]\\n\\n\\t# `grant` assigned a single grant from the grants list for 'role'...\\n\\tsome grant in data.role_grants[role]\\n}\\n\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{EXPRESS_BE_URL}}/rego/fmt",
+							"host": [
+								"{{EXPRESS_BE_URL}}"
+							],
+							"path": [
+								"rego",
+								"fmt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rego server lint",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rego_version\": 1,\n    \"rego_module\": \"# Role-based Access Control (RBAC)\\n# --------------------------------\\n#\\n# This example defines an RBAC model for a Pet Store API. The Pet Store API allows\\n# users to look at pets, adopt them, update their stats, and so on. The policy\\n# controls which users can perform actions on which resources. The policy implements\\n# a classic Role-based Access Control model where users are assigned to roles and\\n# roles are granted the ability to perform some action(s) on some type of resource.\\n#\\n# This example shows how to:\\n#\\n#\\t* Define an RBAC model in Rego that interprets role mappings represented in JSON.\\n#\\t* Iterate/search across JSON data structures (e.g., role mappings)\\n#\\n# For more information see:\\n#\\n#\\t* Rego comparison to other systems: https://www.openpolicyagent.org/docs/latest/comparison-to-other-systems/\\n#\\t* Rego Iteration: https://www.openpolicyagent.org/docs/latest/#iteration\\n\\npackage app.rbac\\n\\n# By default, deny requests.\\ndefault allow := false\\n\\n# Allow admins to do anything.\\nallow if user_is_admin\\n\\n# Allow the action if the user is granted permission to perform the action.\\nallow if {\\n\\t# Find grants for the user.\\n\\tsome grant in user_is_granted\\n\\n\\t# Check if the grant permits the action.\\n\\tinput.action == grant.action\\n\\tinput.type == grant.type\\n}\\n\\n# user_is_admin is true if \\\"admin\\\" is among the user's roles as per data.user_roles\\nuser_is_admin if \\\"admin\\\" in data.user_roles[input.user]\\n\\n# user_is_granted is a set of grants for the user identified in the request.\\n# The `grant` will be contained if the set `user_is_granted` for every...\\nuser_is_granted contains grant if {\\n\\t# `role` assigned an element of the user_roles for this user...\\n\\tsome role in data.user_roles[input.user]\\n\\n\\t# `grant` assigned a single grant from the grants list for 'role'...\\n\\tsome grant in data.role_grants[role]\\n}\\n\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{EXPRESS_BE_URL}}/rego/lint",
+							"host": [
+								"{{EXPRESS_BE_URL}}"
+							],
+							"path": [
+								"rego",
+								"lint"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rego server run againts policy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rego_modules\": {\n        \"policy.rego\": \"# Role-based Access Control (RBAC)\\n# --------------------------------\\n#\\n# This example defines an RBAC model for a Pet Store API. The Pet Store API allows\\n# users to look at pets, adopt them, update their stats, and so on. The policy\\n# controls which users can perform actions on which resources. The policy implements\\n# a classic Role-based Access Control model where users are assigned to roles and\\n# roles are granted the ability to perform some action(s) on some type of resource.\\n#\\n# This example shows how to:\\n#\\n#\\t* Define an RBAC model in Rego that interprets role mappings represented in JSON.\\n#\\t* Iterate/search across JSON data structures (e.g., role mappings)\\n#\\n# For more information see:\\n#\\n#\\t* Rego comparison to other systems: https://www.openpolicyagent.org/docs/latest/comparison-to-other-systems/\\n#\\t* Rego Iteration: https://www.openpolicyagent.org/docs/latest/#iteration\\n\\npackage app.rbac\\n\\n# By default, deny requests.\\ndefault allow := false\\n\\n# Allow admins to do anything.\\nallow if user_is_admin\\n\\n# Allow the action if the user is granted permission to perform the action.\\nallow if {\\n\\t# Find grants for the user.\\n\\tsome grant in user_is_granted\\n\\n\\t# Check if the grant permits the action.\\n\\tinput.action == grant.action\\n\\tinput.type == grant.type\\n}\\n\\n# user_is_admin is true if \\\"admin\\\" is among the user's roles as per data.user_roles\\nuser_is_admin if \\\"admin\\\" in data.user_roles[input.user]\\n\\n# user_is_granted is a set of grants for the user identified in the request.\\n# The `grant` will be contained if the set `user_is_granted` for every...\\nuser_is_granted contains grant if {\\n\\t# `role` assigned an element of the user_roles for this user...\\n\\tsome role in data.user_roles[input.user]\\n\\n\\t# `grant` assigned a single grant from the grants list for 'role'...\\n\\tsome grant in data.role_grants[role]\\n}\\n\"\n    },\n    \"input\": {\n        \"user\": \"alice\",\n        \"action\": \"read\",\n        \"object\": \"id123\",\n        \"type\": \"dog\"\n    },\n    \"data\": {\n        \"user_roles\": {\n            \"alice\": [\n                \"admin\"\n            ],\n            \"bob\": [\n                \"employee\",\n                \"billing\"\n            ],\n            \"eve\": [\n                \"customer\"\n            ]\n        },\n        \"role_grants\": {\n            \"customer\": [\n                {\n                    \"action\": \"read\",\n                    \"type\": \"dog\"\n                },\n                {\n                    \"action\": \"read\",\n                    \"type\": \"cat\"\n                },\n                {\n                    \"action\": \"adopt\",\n                    \"type\": \"dog\"\n                },\n                {\n                    \"action\": \"adopt\",\n                    \"type\": \"cat\"\n                }\n            ],\n            \"employee\": [\n                {\n                    \"action\": \"read\",\n                    \"type\": \"dog\"\n                },\n                {\n                    \"action\": \"read\",\n                    \"type\": \"cat\"\n                },\n                {\n                    \"action\": \"update\",\n                    \"type\": \"dog\"\n                },\n                {\n                    \"action\": \"update\",\n                    \"type\": \"cat\"\n                }\n            ],\n            \"billing\": [\n                {\n                    \"action\": \"read\",\n                    \"type\": \"finance\"\n                },\n                {\n                    \"action\": \"update\",\n                    \"type\": \"finance\"\n                }\n            ]\n        }\n    },\n    \"strict\": true,\n    \"rego_version\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{EXPRESS_BE_URL}}/rego/run",
+							"host": [
+								"{{EXPRESS_BE_URL}}"
+							],
+							"path": [
+								"rego",
+								"run"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://127.0.0.1:3333",
+			"type": "string"
+		},
+		{
+			"key": "EXPRESS_BE_URL",
+			"value": "http://localhost:3100",
+			"type": "string"
+		}
+	]
+}
