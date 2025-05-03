@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { regoRouter } from "./modules/rego/router.js";
+import { kyvernoRouter } from "./modules/kyverno/router.js";
+import { utilRouter } from "./modules/util/router.js";
 
 // Configure dotenv
 dotenv.config();
@@ -20,7 +22,6 @@ const GO_BE_URL = process.env.GO_VALIDATING_URL || "http://127.0.0.1:3333";
 const FAST_API_URL = process.env.FAST_API_URL || "http://127.0.0.1:8081";
 
 // Routes
-app.use("/rego", regoRouter);
 
 // Middleware
 // add cors
@@ -57,6 +58,9 @@ async function connectToMongo() {
 app.get("/", (req, res) => {
   res.send("API Running");
 });
+app.use("/rego", regoRouter);
+app.use("/kyverno", kyvernoRouter);
+app.use("/util", utilRouter);
 
 app.post("/translate", async (req, res) => {
   try {

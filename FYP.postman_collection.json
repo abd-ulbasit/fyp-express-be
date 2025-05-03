@@ -272,6 +272,186 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "rego",
+			"item": [
+				{
+					"name": "engine",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"policies\": \"apiVersion: kyverno.io/v1\\nkind: ClusterPolicy\\nmetadata:\\n  name: require-labels\\nspec:\\n  validationFailureAction: Audit\\n  rules:\\n\\n\\n\\n    \\n    - name: check-for-labels\\n      match:\\n        any:\\n          - resources:\\n              kinds:\\n                - Pod\\n      validate:\\n        message: \\\"label 'app.kubernetes.io/name' is required\\\"\\n        pattern:\\n          metadata:\\n            labels:\\n              app.kubernetes.io/name: \\\"?*\\\"\",\n    \"resources\": \"apiVersion: v1\\nkind: Pod\\nmetadata:\\n  labels:\\n    run: nginx\\n  name: nginx\\n  namespace: default\\nspec:\\n  containers:\\n    - image: nginx\\n      name: nginx\\n      resources: {}\",\n    \"oldResources\": \"\",\n    \"policyExceptions\": \"\",\n    \"clusterResources\": \"\",\n    \"context\": \"kubernetes:\\n  version: '1.28'\\n\\ncontext:\\n  username: ''\\n  groups: []\\n  roles: []\\n  clusterRoles: []\\n  namespaceLabels: {}\\n  operation: CREATE\\n  dryRun: false\\n\\nflags:\\n  cosign:\\n    imageSignatureRepository: ''\\n  exceptions:\\n    enabled: true\\n    namespace: ''\\n  forceFailurePolicyIgnore:\\n    enabled: false\\n  protectManagedResources:\\n    enabled: false\\n  enableDeferredLoading:\\n    enabled: false\\n  generateValidatingAdmissionPolicy:\\n    enabled: false\\n  registry:\\n    allowInsecure: false\\n    pullSecrets: []\\n    credentialHelpers:\\n      - default\\n      - amazon\\n      - azure\\n      - github\\n      - google\\n\\nvariables: {}\",\n    \"config\": \"apiVersion: v1\\nkind: ConfigMap\\nmetadata:\\n  name: kyverno\\n  namespace: kyverno\\ndata:\\n  enableDefaultRegistryMutation: 'true'\\n  defaultRegistry: docker.io\\n  # comma separated list\\n  excludeGroups: 'system:nodes'\\n  # comma separated list\\n  excludeUsernames: ''\\n  # comma separated list\\n  excludeRoles: ''\\n  # comma separated list\\n  excludeClusterRoles: ''\\n  resourceFilters: |\\n    [*,kyverno,*]\\n    [Event,*,*]\\n    [*,kube-system,*]\\n    [*,kube-public,*]\\n    [*,kube-node-lease,*]\\n    [Node,*,*]\\n    [APIService,*,*]\\n    [TokenReview,*,*]\\n    [SubjectAccessReview,*,*]\\n    [SelfSubjectAccessReview,*,*]\\n    [Binding,*,*]\\n    [ReplicaSet,*,*]\\n    [AdmissionReport,*,*]\\n    [ClusterAdmissionReport,*,*]\\n    [BackgroundScanReport,*,*]\\n    [ClusterBackgroundScanReport,*,*]\\n    [ClusterRole,*,kyverno:*]\\n    [ClusterRoleBinding,*,kyverno:*]\\n    [ServiceAccount,kyverno,kyverno]\\n    [ConfigMap,kyverno,kyverno]\\n    [ConfigMap,kyverno,kyverno-metrics]\\n    [Deployment,kyverno,kyverno]\\n    [Job,kyverno,kyverno-hook-pre-delete]\\n    [NetworkPolicy,kyverno,kyverno]\\n    [PodDisruptionBudget,kyverno,kyverno]\\n    [Role,kyverno,kyverno:*]\\n    [RoleBinding,kyverno,kyverno:*]\\n    [Secret,kyverno,kyverno-svc.kyverno.svc.*]\\n    [Service,kyverno,kyverno-svc]\\n    [Service,kyverno,kyverno-svc-metrics]\\n    [ServiceMonitor,kyverno,kyverno-svc-service-monitor]\\n    [Pod,kyverno,kyverno-test]\",\n    \"customResourceDefinitions\": \"\",\n    \"imageData\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://playground.kyverno.io/api/engine",
+							"protocol": "https",
+							"host": [
+								"playground",
+								"kyverno",
+								"io"
+							],
+							"path": [
+								"api",
+								"engine"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "rego express-be",
+			"item": [
+				{
+					"name": "engine",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"policies\": \"apiVersion: kyverno.io/v1\\nkind: ClusterPolicy\\nmetadata:\\n  name: require-labels\\nspec:\\n  validationFailureAction: Audit\\n  rules:\\n\\n\\n\\n    \\n    - name: check-for-labels\\n      match:\\n        any:\\n          - resources:\\n              kinds:\\n                - Pod\\n      validate:\\n        message: \\\"label 'app.kubernetes.io/name' is required\\\"\\n        pattern:\\n          metadata:\\n            labels:\\n              app.kubernetes.io/name: \\\"?*\\\"\",\n    \"resources\": \"apiVersion: v1\\nkind: Pod\\nmetadata:\\n  labels:\\n    run: nginx\\n  name: nginx\\n  namespace: default\\nspec:\\n  containers:\\n    - image: nginx\\n      name: nginx\\n      resources: {}\",\n    \"oldResources\": \"\",\n    \"policyExceptions\": \"\",\n    \"clusterResources\": \"\",\n    \"context\": \"kubernetes:\\n  version: '1.28'\\n\\ncontext:\\n  username: ''\\n  groups: []\\n  roles: []\\n  clusterRoles: []\\n  namespaceLabels: {}\\n  operation: CREATE\\n  dryRun: false\\n\\nflags:\\n  cosign:\\n    imageSignatureRepository: ''\\n  exceptions:\\n    enabled: true\\n    namespace: ''\\n  forceFailurePolicyIgnore:\\n    enabled: false\\n  protectManagedResources:\\n    enabled: false\\n  enableDeferredLoading:\\n    enabled: false\\n  generateValidatingAdmissionPolicy:\\n    enabled: false\\n  registry:\\n    allowInsecure: false\\n    pullSecrets: []\\n    credentialHelpers:\\n      - default\\n      - amazon\\n      - azure\\n      - github\\n      - google\\n\\nvariables: {}\",\n    \"config\": \"apiVersion: v1\\nkind: ConfigMap\\nmetadata:\\n  name: kyverno\\n  namespace: kyverno\\ndata:\\n  enableDefaultRegistryMutation: 'true'\\n  defaultRegistry: docker.io\\n  # comma separated list\\n  excludeGroups: 'system:nodes'\\n  # comma separated list\\n  excludeUsernames: ''\\n  # comma separated list\\n  excludeRoles: ''\\n  # comma separated list\\n  excludeClusterRoles: ''\\n  resourceFilters: |\\n    [*,kyverno,*]\\n    [Event,*,*]\\n    [*,kube-system,*]\\n    [*,kube-public,*]\\n    [*,kube-node-lease,*]\\n    [Node,*,*]\\n    [APIService,*,*]\\n    [TokenReview,*,*]\\n    [SubjectAccessReview,*,*]\\n    [SelfSubjectAccessReview,*,*]\\n    [Binding,*,*]\\n    [ReplicaSet,*,*]\\n    [AdmissionReport,*,*]\\n    [ClusterAdmissionReport,*,*]\\n    [BackgroundScanReport,*,*]\\n    [ClusterBackgroundScanReport,*,*]\\n    [ClusterRole,*,kyverno:*]\\n    [ClusterRoleBinding,*,kyverno:*]\\n    [ServiceAccount,kyverno,kyverno]\\n    [ConfigMap,kyverno,kyverno]\\n    [ConfigMap,kyverno,kyverno-metrics]\\n    [Deployment,kyverno,kyverno]\\n    [Job,kyverno,kyverno-hook-pre-delete]\\n    [NetworkPolicy,kyverno,kyverno]\\n    [PodDisruptionBudget,kyverno,kyverno]\\n    [Role,kyverno,kyverno:*]\\n    [RoleBinding,kyverno,kyverno:*]\\n    [Secret,kyverno,kyverno-svc.kyverno.svc.*]\\n    [Service,kyverno,kyverno-svc]\\n    [Service,kyverno,kyverno-svc-metrics]\\n    [ServiceMonitor,kyverno,kyverno-svc-service-monitor]\\n    [Pod,kyverno,kyverno-test]\",\n    \"customResourceDefinitions\": \"\",\n    \"imageData\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{EXPRESS_BE_URL}}/kyverno/engine",
+							"host": [
+								"{{EXPRESS_BE_URL}}"
+							],
+							"path": [
+								"kyverno",
+								"engine"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "utlis",
+			"item": [
+				{
+					"name": "yaml-to-json",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"yaml\": \"name: John Doe\\nage: 30\\naddress:\\n  street: 123 Main St\\n  city: New York\\n  zipcode: '10001'\\nskills:\\n  - JavaScript\\n  - Node.js\\n  - Express\\nactive: true\\nprojects:\\n  - name: Project A\\n    role: Developer\\n    duration: 6 months\\n  - name: Project B\\n    role: Team Lead\\n    duration: 1 year\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{EXPRESS_BE_URL}}/util/yaml-to-json",
+							"host": [
+								"{{EXPRESS_BE_URL}}"
+							],
+							"path": [
+								"util",
+								"yaml-to-json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "yaml-to-json Complex",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"yaml\": \"company:\\n  name: Tech Innovations Ltd\\n  established: 2015\\n  headquarters:\\n    address:\\n      street: 100 Technology Plaza\\n      floor: 15\\n      suite: 1520\\n      city: Silicon Valley\\n      state: CA\\n      country: USA\\n      coordinates:\\n        latitude: 37.7749\\n        longitude: -122.4194\\n  departments:\\n    - name: Engineering\\n      head: Alex Rodriguez\\n      employees_count: 120\\n      sub_departments:\\n        - name: Frontend\\n          lead: Sarah Johnson\\n          technologies:\\n            - name: React\\n              proficiency_level: 4.8\\n              projects:\\n                - name: Dashboard Redesign\\n                  priority: high\\n                  status: in_progress\\n                  timeline:\\n                    start_date: '2025-01-15'\\n                    end_date: '2025-04-30'\\n                  team_members:\\n                    - name: John Smith\\n                      role: Senior Developer\\n                      tasks:\\n                        - UI Components\\n                        - State Management\\n                    - name: Lisa Brown\\n                      role: UX Designer\\n            - name: Angular\\n              proficiency_level: 4.2\\n        - name: Backend\\n          lead: Michael Chen\\n          technologies:\\n            - name: Node.js\\n              version: 16.14.0\\n            - name: Python\\n              frameworks:\\n                - Django\\n                - Flask\\n    - name: Product\\n      head: Emily Washington\\n      employees_count: 45\\n      product_lines:\\n        - name: Enterprise Solutions\\n          revenue: 2500000\\n          active_clients: 17\\n          client_industries:\\n            - Finance\\n            - Healthcare\\n            - Manufacturing\\n          features_roadmap:\\n            Q1_2025:\\n              - name: AI Integration\\n                status: planning\\n              - name: Advanced Analytics\\n                status: development\\n            Q2_2025:\\n              - name: Blockchain Security\\n                status: research\\n  financial_data:\\n    years:\\n      '2023':\\n        revenue: 12500000\\n        expenses: 8750000\\n        growth_rate: 0.15\\n        quarters:\\n          Q1:\\n            revenue: 3000000\\n            major_clients: [Microsoft, Amazon]\\n          Q2:\\n            revenue: 3250000\\n            major_clients: [Google, Salesforce]\\n      '2024':\\n        revenue: 15000000\\n        expenses: 10200000\\n        growth_rate: 0.20\\n  active_projects:\\n    - id: PRJ-001\\n      name: NextGen Platform\\n      budget: 1200000\\n      team_size: 15\\n      milestones:\\n        - name: Requirements Gathering\\n          completed: true\\n          deliverables:\\n            - document: Specification.pdf\\n              reviewed_by:\\n                - name: Thomas Wright\\n                  department: QA\\n                  comments:\\n                    - date: '2025-01-10'\\n                      content: 'Section 3.2 needs clarification'\\n                    - date: '2025-01-12'\\n                      content: 'Approved with minor changes'\\n        - name: Alpha Release\\n          completed: false\\n          due_date: '2025-03-30'\\n      technologies_used:\\n        frontend: [React, Redux, TypeScript]\\n        backend: [Node.js, MongoDB]\\n        devops: [Docker, Kubernetes, AWS]\\n  brand_values:\\n    - name: Innovation\\n      description: 'Pushing the boundaries of what''s possible'\\n    - name: Quality\\n      description: 'Delivering excellence in every product'\\n    - name: Integrity\\n      description: 'Honest and ethical business practices'\\n  certifications:\\n    - ISO-9001\\n    - ISO-27001\\n    - SOC2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{EXPRESS_BE_URL}}/util/yaml-to-json",
+							"host": [
+								"{{EXPRESS_BE_URL}}"
+							],
+							"path": [
+								"util",
+								"yaml-to-json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "json to yaml",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"json\": {\n    \"name\": \"Jane Smith\",\n    \"age\": 28,\n    \"address\": {\n      \"street\": \"456 Oak Avenue\",\n      \"city\": \"San Francisco\",\n      \"zipcode\": \"94107\"\n    },\n    \"skills\": [\"Python\", \"Django\", \"React\"],\n    \"active\": true,\n    \"projects\": [\n      {\n        \"name\": \"Website Redesign\",\n        \"role\": \"Frontend Developer\",\n        \"duration\": \"3 months\"\n      },\n      {\n        \"name\": \"API Development\",\n        \"role\": \"Backend Developer\",\n        \"duration\": \"8 months\"\n      }\n    ]\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{EXPRESS_BE_URL}}/util/json-to-yaml",
+							"host": [
+								"{{EXPRESS_BE_URL}}"
+							],
+							"path": [
+								"util",
+								"json-to-yaml"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "json to yaml Complex",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"json\": {\n    \"university\": {\n      \"name\": \"Global University\",\n      \"founded\": 1875,\n      \"campuses\": [\n        {\n          \"name\": \"Main Campus\",\n          \"location\": {\n            \"city\": \"Cambridge\",\n            \"state\": \"Massachusetts\",\n            \"country\": \"USA\",\n            \"coordinates\": {\n              \"latitude\": 42.3736,\n              \"longitude\": -71.1097,\n              \"elevation\": {\n                \"value\": 20,\n                \"unit\": \"meters\"\n              }\n            }\n          },\n          \"facilities\": {\n            \"libraries\": [\n              {\n                \"name\": \"Central Library\",\n                \"books_count\": 2000000,\n                \"special_collections\": [\n                  {\n                    \"name\": \"Ancient Manuscripts\",\n                    \"items\": 1200,\n                    \"most_valuable\": {\n                      \"title\": \"Codex Atlanticus\",\n                      \"origin\": \"15th Century\",\n                      \"estimated_value\": \"Priceless\",\n                      \"condition\": {\n                        \"preservation\": \"excellent\",\n                        \"restoration_history\": [\n                          {\n                            \"year\": 1998,\n                            \"procedure\": \"Deacidification\",\n                            \"performed_by\": \"Dr. Elizabeth Chen\"\n                          },\n                          {\n                            \"year\": 2010,\n                            \"procedure\": \"Rebinding\",\n                            \"performed_by\": \"Dr. Robert Murray\"\n                          }\n                        ]\n                      }\n                    }\n                  }\n                ]\n              },\n              {\n                \"name\": \"Science Library\",\n                \"books_count\": 500000\n              }\n            ],\n            \"laboratories\": {\n              \"physics\": {\n                \"equipment\": [\n                  {\n                    \"name\": \"Particle Accelerator\",\n                    \"model\": \"CERN-XS-Mini\",\n                    \"acquisition_date\": \"2022-05-12\",\n                    \"maintenance_schedule\": {\n                      \"frequency\": \"quarterly\",\n                      \"last_service\": \"2025-01-15\",\n                      \"next_service\": \"2025-04-15\",\n                      \"service_provider\": {\n                        \"name\": \"Advanced Scientific Equipment Inc.\",\n                        \"contract_details\": {\n                          \"id\": \"ASE-2024-113\",\n                          \"value\": 175000,\n                          \"start_date\": \"2024-01-01\",\n                          \"end_date\": \"2025-12-31\",\n                          \"covered_items\": [\n                            \"Routine Maintenance\",\n                            \"Emergency Repairs\",\n                            \"Software Updates\"\n                          ]\n                        }\n                      }\n                    }\n                  }\n                ]\n              }\n            }\n          }\n        },\n        {\n          \"name\": \"International Campus\",\n          \"location\": {\n            \"city\": \"Geneva\",\n            \"country\": \"Switzerland\"\n          }\n        }\n      ],\n      \"faculties\": [\n        {\n          \"name\": \"Faculty of Science\",\n          \"departments\": [\n            {\n              \"name\": \"Physics\",\n              \"head\": \"Prof. Maria Rodriguez\",\n              \"research_areas\": [\n                \"Quantum Computing\",\n                \"Astrophysics\",\n                \"Material Science\"\n              ],\n              \"courses\": [\n                {\n                  \"code\": \"PHY101\",\n                  \"title\": \"Introduction to Physics\",\n                  \"credits\": 3,\n                  \"prerequisites\": [],\n                  \"semesters_offered\": [\"Fall\", \"Spring\"]\n                },\n                {\n                  \"code\": \"PHY301\",\n                  \"title\": \"Quantum Mechanics\",\n                  \"credits\": 4,\n                  \"prerequisites\": [\"PHY201\", \"MATH202\"],\n                  \"semesters_offered\": [\"Fall\"]\n                }\n              ]\n            }\n          ]\n        },\n        {\n          \"name\": \"Faculty of Arts\",\n          \"departments\": [\n            {\n              \"name\": \"History\",\n              \"research_centers\": [\n                {\n                  \"name\": \"Center for Medieval Studies\",\n                  \"funding\": {\n                    \"annual_budget\": 1200000,\n                    \"sources\": [\n                      {\n                        \"name\": \"National Endowment for Humanities\",\n                        \"amount\": 750000,\n                        \"grant_period\": \"2024-2026\"\n                      },\n                      {\n                        \"name\": \"University Fund\",\n                        \"amount\": 450000,\n                        \"renewable\": true\n                      }\n                    ]\n                  },\n                  \"publications\": [\n                    {\n                      \"title\": \"Medieval Trade Routes and Their Impact\",\n                      \"authors\": [\n                        {\n                          \"name\": \"Dr. James Wilson\",\n                          \"position\": \"Research Director\",\n                          \"citations\": 143\n                        },\n                        {\n                          \"name\": \"Dr. Sarah Ahmed\",\n                          \"position\": \"Senior Researcher\",\n                          \"citations\": 89\n                        }\n                      ],\n                      \"journal\": \"Historical Perspectives\",\n                      \"publication_date\": \"2024-08-15\",\n                      \"impact_factor\": 4.2\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      ],\n      \"statistics\": {\n        \"students\": {\n          \"undergraduate\": 15000,\n          \"graduate\": 7500,\n          \"international\": 4500,\n          \"demographics\": {\n            \"gender_ratio\": {\n              \"male\": 0.48,\n              \"female\": 0.51,\n              \"non_binary\": 0.01\n            },\n            \"age_distribution\": {\n              \"18_22\": 0.65,\n              \"23_28\": 0.25,\n              \"29_plus\": 0.1\n            }\n          }\n        },\n        \"rankings\": {\n          \"2024\": {\n            \"world\": 15,\n            \"national\": 7,\n            \"by_subject\": {\n              \"physics\": 5,\n              \"history\": 12,\n              \"computer_science\": 8\n            }\n          }\n        }\n      },\n      \"endowment\": {\n        \"value\": 12500000000,\n        \"annual_growth_rate\": 0.07,\n        \"allocation\": {\n          \"research\": 0.45,\n          \"infrastructure\": 0.30,\n          \"scholarships\": 0.20,\n          \"administrative\": 0.05\n        }\n      }\n    }\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{EXPRESS_BE_URL}}/util/json-to-yaml",
+							"host": [
+								"{{EXPRESS_BE_URL}}"
+							],
+							"path": [
+								"util",
+								"json-to-yaml"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
