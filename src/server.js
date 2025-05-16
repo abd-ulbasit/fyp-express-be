@@ -67,7 +67,7 @@ app.post("/translate", async (req, res) => {
     console.log({ body: req.body });
     console.log(req.body.kyvernoPolicy);
     // Make sure you're passing the actual request body to FastAPI
-    const response = await fetch(`${FAST_API_URL}/validate`, {
+    const response = await fetch(`${FAST_API_URL}/api/v2/validate`, {
       method: "POST",
       body: JSON.stringify(req.body), // Convert JS object to JSON string
       headers: { "Content-Type": "application/json" },
@@ -75,12 +75,42 @@ app.post("/translate", async (req, res) => {
 
     const data = await response.json();
     console.log({ data });
+    // const data = {};
+    // data["metadata"] = {
+    //   rego_policy_explanation:
+    //     "This is a sample explanation for the Rego policy.",
+    //   conversion_explanation:
+    //     "This is a sample explanation for the conversion.",
+    // };
+    // data["policy"] =
+    //   '{"apiVersion":"kyverno.io/v1","kind":"ClusterPolicy","metadata":{"name":"example-policy"},"spec":{"rules":[{"name":"example-rule","match":{"resources":{"kinds":["Pod"]}},"validate":{"message":"This is a sample validation message.","pattern":{"apiVersion":"v1","kind":"Pod"}}}]}}';
     res.json(data);
   } catch (error) {
     console.error("Error: ", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
+app.post("/feedback", async (req, res) => {
+  try {
+    const { kynverno_policy, rego_policy } = req.body;
+    console.log({ kynverno_policy, rego_policy });
+    // Make sure you're passing the actual request body to FastAPI
+    const response = await fetch(`${FAST_API_URL}/api/v2/uploadSample`, {
+      method: "POST",
+      body: { kynverno_policy, rego_policy },
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await response.json();
+    console.log({ data });
+
+    res.status(200).json({ message: "Feedback received" });
+  } catch (error) {
+    console.error("Error saving feedback:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+}); 
 
 // Start server
 async function startServer() {
