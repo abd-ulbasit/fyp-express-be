@@ -7,6 +7,7 @@ import { dirname } from "path";
 import { regoRouter } from "./modules/rego/router.js";
 import { kyvernoRouter } from "./modules/kyverno/router.js";
 import { utilRouter } from "./modules/util/router.js";
+import axios from "axios";
 
 // Configure dotenv
 dotenv.config();
@@ -96,11 +97,14 @@ app.post("/feedback", async (req, res) => {
     const { kyverno_policy, rego_policy } = req.body;
     console.log({ kyverno_policy, rego_policy });
     // Make sure you're passing the actual request body to FastAPI
-    const response = await fetch(`${FAST_API_URL}/api/v2/uploadSample`, {
-      method: "POST",
-      body: { kyverno_policy, rego_policy },
-      headers: { "Content-Type": "application/json" },
-    });
+    const response = await axios.post(
+      `${FAST_API_URL}/api/v2/uploadSample`,
+      {
+        kyverno_policy,
+        rego_policy,
+      },
+      { headers: { "Content-Type": "application/json" } }
+    );
 
     const data = await response.json();
     console.log({ data });
