@@ -93,12 +93,12 @@ app.post("/translate", async (req, res) => {
 
 app.post("/feedback", async (req, res) => {
   try {
-    const { kynverno_policy, rego_policy } = req.body;
-    console.log({ kynverno_policy, rego_policy });
+    const { kyverno_policy, rego_policy } = req.body;
+    console.log({ kyverno_policy, rego_policy });
     // Make sure you're passing the actual request body to FastAPI
     const response = await fetch(`${FAST_API_URL}/api/v2/uploadSample`, {
       method: "POST",
-      body: { kynverno_policy, rego_policy },
+      body: { kyverno_policy, rego_policy },
       headers: { "Content-Type": "application/json" },
     });
 
